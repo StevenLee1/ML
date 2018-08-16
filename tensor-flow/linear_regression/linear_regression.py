@@ -21,3 +21,42 @@ n_samples = train_X.shape[0]
 #tf Graph Input
 X = tf.placeholder("float")
 Y = tf.placeholder('float')
+
+#set model weights
+W = tf.Variable(rng.randn(), name = "weight")
+b = tf.Variable(rng.randn(), name="bias")
+
+#construct a linear model
+prediction = tf.add(tf.multiply(X, W), b)
+
+#mean squared error
+cost = tf.reduce_sum(tf.pow(prediction-Y, 2))/(2 * n_samples)
+#gradient descent
+optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
+
+#initialize the variables(assign their default value)
+init = tf.global_variables_initializer()
+
+#start training
+with tf.Session() as sess:
+    sess.run(init)
+    #fit all training data
+    for epoch in range(training_epochs):
+        for (x, y) in zip(train_X, train_Y):
+            sess.run(optimizer, feed_dict={X:x, Y:y})
+
+        #display logs per epoch step
+        if (epoch+1) % displaty_step == 0:
+            c = sess.run(cost, feed_dict={X:train_X, Y:train_Y})
+            print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(c),
+                  "W=",sess.run(W), "b=", sess.run(b))
+    print('OPtimization finished!')
+    training_cost = sess.run(cost, feed_dict={X:train_X, Y:train_Y})
+    print("Trainging cost=", training_cost, "W=", sess.run(W), "b=", sess.run(b),'\n')
+
+    #Graphic display
+    plt.plot(train_X, train_Y, 'ro', label='Original data')
+    plt.plot(train_X, sess.run(W)*train_X + sess.run(b), label = 'Fitted line')
+    plt.legend()
+    plt.show()
+
