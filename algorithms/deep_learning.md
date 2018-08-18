@@ -115,4 +115,4 @@ $$
 
 输入提供初始信息，然乎传播到每一层的隐藏单元，最终给产生输出。称之为前向传播。
 
-> http://galaxy.agh.edu.pl/~vlsi/AI/backp_t_en/backprop.html（转载）
+> http://galaxy.agh.edu.pl/~vlsi/AI/backp_t_en/backprop.html
